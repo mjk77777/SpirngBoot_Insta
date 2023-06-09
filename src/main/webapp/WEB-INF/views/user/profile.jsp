@@ -30,11 +30,11 @@
 					</c:when>
 					<c:otherwise> <!-- 내 프로필 페이지가 아님 -->
 						<c:choose>
-							<c:when test="${dto.subscribeState }">  <!-- true 이면 구독취소 뜨게 -->
-								<button class="cta blue" onclick="toggleSubscribe(this)">구독취소</button>
+							<c:when test="${dto.subscribeState }">  <!-- true 이면 구독중 = 구독취소 뜨게 -->
+								<button class="cta blue" onclick="toggleSubscribe(this, ${dto.user.id})">구독취소</button>  <!-- this : event를 받는다 -->
 							</c:when>
 							<c:otherwise> <!-- false 이면 구독하지 않은 상태 -->
-								<button class="cta" onclick="toggleSubscribe(this)">구독하기</button>
+								<button class="cta" onclick="toggleSubscribe(this, ${dto.user.id})">구독하기</button>
 							</c:otherwise>
 						</c:choose>
 					</c:otherwise>
@@ -49,7 +49,7 @@
 				<ul>
 					<li><a href=""> 게시물<span>${dto.imageCount }</span>
 					</a></li>
-					<li><a href="javascript:subscribeInfoModalOpen();"> 구독정보<span>${dto.subscribeCount }</span>
+					<li><a href="javascript:subscribeInfoModalOpen(${dto.user.id });"> 구독정보<span>${dto.subscribeCount }</span>
 					</a></li>
 				</ul>
 			</div>
@@ -114,6 +114,8 @@
 
 <!--프로필사진 바꾸기 모달end-->
 
+<!-- 구독정보 모달 -->
+
 <div class="modal-subscribe">
 	<div class="subscribe">
 		<div class="subscribe-header">
@@ -124,31 +126,10 @@
 		</div>
 
 		<div class="subscribe-list" id="subscribeModalList">
-
-			<div class="subscribe__item" id="subscribeModalItem-1">
-				<div class="subscribe__img">
-					<img src="#" onerror="this.src='/images/person.jpeg'" />
-				</div>
-				<div class="subscribe__text">
-					<h2>love</h2>
-				</div>
-				<div class="subscribe__btn">
-					<button class="cta blue" onclick="toggleSubscribeModal(this)">구독취소</button>
-				</div>
-			</div>
+		
+		<!-- 모달에 구독자 리스트 뿌리는 공간 -> profile.js 의  getSubscribeModalItem() -->
 
 
-			<div class="subscribe__item" id="subscribeModalItem-2">
-				<div class="subscribe__img">
-					<img src="#" onerror="this.src='/images/person.jpeg'" />
-				</div>
-				<div class="subscribe__text">
-					<h2>ssar</h2>
-				</div>
-				<div class="subscribe__btn">
-					<button class="cta blue" onclick="toggleSubscribeModal(this)">구독취소</button>
-				</div>
-			</div>
 		</div>
 	</div>
 

@@ -55,7 +55,7 @@ public class User {
 	// User를 Select 할 때, 해당 User id로 등록된 image 들을 다 가져와.
 	// LAZY = User 를 select 할 때, 해당 User id로 등록된 image들 가져오지마. + getImages() 함수가 호출될때 가져옴
 	// EAGER = User 를 Select 할때, 해당 User id로 등록된 image 들을 전부 Join 해서 가져와
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY) 
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER) 
 	@JsonIgnoreProperties("user") // json으로 파싱할 때, Image 클래스의 user 는 무시하고 파싱해줘 (user의 getter 호출되면 무한참조 일어나)
 	private List<Image> images;  //양방향 매핑
 	
