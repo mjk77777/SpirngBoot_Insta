@@ -3,6 +3,7 @@ package com.cos.photogramstart.service;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,12 @@ public class ImageService {
 	
 	@Value("${file.path}")  // application.yml 에 적은 설정값 가져올 수 있음
 	private String uploadFolder;
+	
+	@Transactional(readOnly = true)
+	public List<Image> 인기게시물(){
+		
+		return imageRepository.mPopular();
+	}
 	
 	@Transactional(readOnly = true) // 영속성 컨텍스트 변경 감지를 해서 , 더티체킹 , flush(반영) X -> 성능 좋아짐
 	public Page<Image> 이미지스토리(int principalId, Pageable pageable){
@@ -70,4 +77,6 @@ public class ImageService {
 		
 		//System.out.println(imageEntity.toString());  
 	}
+
+
 }

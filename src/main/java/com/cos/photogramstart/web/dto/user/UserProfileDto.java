@@ -20,4 +20,5 @@ public class UserProfileDto {
 	private boolean subscribeState; //구독한 상태인지
 	private int subscribeCount; //구독자수
 
+	// private int likeCount -> 안돼. 한건밖에 못 넣으므로. image 마다 들고있어
 }

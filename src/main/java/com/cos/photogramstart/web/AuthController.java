@@ -50,16 +50,6 @@ public class AuthController {
 	@PostMapping("/auth/signup") 
 	public String singup(@Valid SignupDto singupDto, BindingResult bindingResult) {  // key=value(x-www-form-urlencoded)
 		
-		//valdation 체크해서 -> 문제가 생기면 BindingReusult 클래스의 getFieldErrors 란 list 에 다 모아줌
-		if(bindingResult.hasErrors()) {  //ex. max(20) 넘어갔다든지, blank 가 생겼다든지
-			Map<String, String> errorMap = new HashMap<>();
-			
-			for(FieldError error : bindingResult.getFieldErrors()) {
-				errorMap.put(error.getField(), error.getDefaultMessage());
-				System.out.println(error.getDefaultMessage());  // '20이하여야 합니다'
-			}
-			throw new CustomValidationException("유효성 검사 실패함", errorMap);   //Exception 을 강제로 발동시킬 거임 -> Exception 가로채기 (ControllerExceptionHandler)
-		}else {
 			//log.info(singupDto.toString());
 			// SignupDto -> User 오브젝트에 넣기 
 			User user = singupDto.toEntity();
@@ -67,7 +57,6 @@ public class AuthController {
 			User userEntity = authService.회원가입(user);
 			System.out.println(userEntity);
 			return "auth/signin"; 
-		}
 		
 		
 	}

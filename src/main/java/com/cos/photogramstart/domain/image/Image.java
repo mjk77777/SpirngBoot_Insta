@@ -10,9 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
+import com.cos.photogramstart.domain.comment.Comment;
 import com.cos.photogramstart.domain.likes.Likes;
 import com.cos.photogramstart.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -48,7 +50,12 @@ public class Image {
 	
 	@Transient
 	private int likeCount;
-	// 댓글
+	
+	// 댓글 (양방향 매핑)
+	@OrderBy("id DESC")  // Image 에서 Comment 가져올 때 정렬해서 가져와
+	@JsonIgnoreProperties({"image"}) // 무한참조 방지
+	@OneToMany(mappedBy = "image") // 연관관계의 주인(fk)은 Comment의 image 이다.
+	private List<Comment> comments;
 	
 	@JsonIgnoreProperties({"images"}) // User 클래스의 'images' 필드는 무시하고 딴 놈들만 가져와
 	@JoinColumn(name = "userId")  //오브젝트 자체를 db 에 저장 못하니 fk 키를 저장 (fk 키의 이름을 우리가 정해줌)

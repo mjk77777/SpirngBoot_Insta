@@ -10,11 +10,13 @@
 		<!--유저이미지-->
 		<div class="profile-left">
 			<div class="profile-img-wrap story-border" onclick="popup('.modal-image')">
-				<form id="userProfileImageForm">
-					<input type="file" name="profileImageFile" style="display: none;" id="userProfileImageInput" />
+			
+				<form id="userProfileImageForm"><!-- enctype 안 적어도 돼. ajax 에서 같이 날리면 돼-->
+					<input type="file" name="profileImageFile" id="userProfileImageInput"  style="display: none;" /> 
 				</form>
 
-				<img class="profile-image" src="#" onerror="this.src='/images/person.jpeg'" id="userProfileImage" />
+				<img class="profile-image" src="/upload/${dto.user.profileImageUrl}" onerror="this.src='/images/person.jpeg'" id="userProfileImage" />
+				
 			</div>
 		</div>
 		<!--유저이미지end-->
@@ -80,8 +82,8 @@
 					<div class="img-box">
 						<a href=""> <img src="/upload/${image.postImageUrl }" />
 						</a>
-						<div class="comment">
-							<a href="#" class=""> <i class="fas fa-heart"></i><span>0</span>
+						<div class="comment"><!-- likeCount 는 db 에 없으니 가져와봤자 0이 나옴  -->
+							<a href="#" class=""> <i class="fas fa-heart"></i><span>${image.likeCount }</span>
 							</a>
 						</div>
 					</div>
@@ -107,7 +109,7 @@
 <div class="modal-image" onclick="modalImage()">
 	<div class="modal">
 		<p>프로필 사진 바꾸기</p>
-		<button onclick="profileImageUpload()">사진 업로드</button>
+		<button onclick="profileImageUpload(${dto.user.id}, ${principal.user.id })">사진 업로드</button>  <!-- pageUserId 와 principalId 던져줌 -->
 		<button onclick="closePopup('.modal-image')">취소</button>
 	</div>
 </div>

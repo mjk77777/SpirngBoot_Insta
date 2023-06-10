@@ -96,6 +96,14 @@
 			<version>3.1.0</version>
 		</dependency>
 
+		<!-- AOP 처리 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
