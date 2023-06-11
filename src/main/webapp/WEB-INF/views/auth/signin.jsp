@@ -41,10 +41,13 @@
                         
                         <!-- Oauth 소셜로그인 -->
                         <div class="login__facebook">
-                            <button onclick="javascript:location.href='/oauth2/authorization/facebook'">
+                            <!-- <button onclick="javascript:location.href='/oauth2/authorization/google'">
                                 <i class="fab fa-facebook-square"></i>
-                                <span>Facebook으로 로그인</span>
-                            </button>
+                                <span>google으로 로그인</span>
+                            </button> -->
+                            <a href="/oauth2/authorization/google">
+                            	<img alt="구글 로그인" src="/images/google_login.png" width="200";>
+                            </a>
                         </div>
                         <!-- Oauth 소셜로그인end -->
                     </div>

@@ -33,7 +33,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  //번호 증가 전략 -> DB 를 따라간다.  ex. mysql) auto-increment , oracle)sequence 전략
 	private int id;    //사용자 많아지면 Long 타입으로 
 	
-	@Column(length = 20, unique = true)  //중복되면 안돼
+	@Column(length = 100, unique = true)  //중복되면 안돼  + oauth2 때문에 length 길이 늘려줌.
 	private String username;
 	@Column(nullable = false)
 	private String password;
@@ -46,6 +46,9 @@ public class User {
 	private String email;
 	private String phone;
 	private String gender;
+	
+	private String provider;
+	private String providerId;
 	
 	private String profileImageUrl;
 	private String role; //권한
@@ -73,6 +76,28 @@ public class User {
 				+ ", profileImageUrl=" + profileImageUrl + ", role=" + role +" , createDate="
 				+ createDate + "]";
 	}
+
+	@Builder
+	public User(String username, String password, String name, String website, String bio, String email,
+			String phone, String gender, String provider, String providerId, String profileImageUrl, String role,
+			List<Image> images, LocalDateTime createDate) {
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.website = website;
+		this.bio = bio;
+		this.email = email;
+		this.phone = phone;
+		this.gender = gender;
+		this.provider = provider;
+		this.providerId = providerId;
+		this.profileImageUrl = profileImageUrl;
+		this.role = role;
+		this.images = images;
+		this.createDate = createDate;
+	}
+	
+	
 	
 	
 

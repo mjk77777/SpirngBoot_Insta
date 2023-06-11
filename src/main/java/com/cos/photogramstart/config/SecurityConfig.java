@@ -1,5 +1,9 @@
 package com.cos.photogramstart.config;
 
+// 1. 코드받기(인증). 2.AccessToken(권한)
+// 3. 사용자 프로필 정보 가져오고 
+// 4-1. 그 정보를 토대로 회원가입을 자동으로 진행시키기도 하고
+// 4-2. 쇼핑몰 -> 구글에서 제공하는 이외의 정보(집주소) 필요 -> 더 받기도 함
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration //IoC
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	private final OAuth2DetailsService oAuth2DetailsService;
+	private final OAuth2DetailsService oAuth2DetailsService;  // DI
 	
 	@Bean
 	public BCryptPasswordEncoder encode() {
@@ -41,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.oauth2Login()  //formLogin() 도 하는데, oauth2 로그인도 할거야!
 			.userInfoEndpoint() // oauth2 로그인을 하면 최종응답인 '회원정보'를 바로 받을 수 있다.(code나 accessToken 안 받을거야)
 			.userService(oAuth2DetailsService)
+			// 구글 로그인이 완료되면 -> 코드X, (AccessToken + 사용자 프로필 정보 O)
 			;
 	}
 

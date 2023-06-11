@@ -21,7 +21,7 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: update #create - 서버 재실행하면 원래 있던 데이터 다 날아가 , update, none
+      ddl-auto: update   #create - 서버 재실행하면 원래 있던 데이터 다 날아가 , update, none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
@@ -35,10 +35,10 @@ spring:
     user:
       name: test
       password: 1234   
-          oauth2:      client:        registration:          facebook:
-            client-id: 221521590659161
-            client-secret: 72a6a82240087a70d9f3260c9f927d5a
-            scope:            - public_profile
+          oauth2:      client:        registration:          google:
+            client-id: 852033997414-699shq9f791n8ta2r8o84c3cqo3lfdtb.apps.googleusercontent.com
+            client-secret: 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
+            scope:            - profile
             - email
 
 file:

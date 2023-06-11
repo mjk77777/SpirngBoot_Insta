@@ -2,21 +2,35 @@ package com.cos.photogramstart.config.auth;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.cos.photogramstart.domain.user.User;
 
 import lombok.Data;
 
 @Data
-public class PrincipalDetails implements UserDetails {
+public class PrincipalDetails implements UserDetails, OAuth2User {
+	// OAuth2User 로나 UserDetails(일반 로그인) 로 로그인하나
+	// Authentication 객체에는 PrincipalDetails 타입으로 저장할 거임.
+	// PrincipalDetails 저장할 때, attributes 정보도 같이 저장할 거임 (OAuth2User 로 로그인할 때)
 	
 	private User user;
+	private Map<String, Object> attributes;
 	
+	// 일반 로그인 시 생성자
 	public PrincipalDetails(User user) {
 		this.user = user;
+	}
+	
+	// OAuth2 로그인 시, 생성자 => PrincipalDetails 가 user 뿐만 아니라 attributes 정보도 가짐.
+	// attributes 를 토대로 user 정보 만들거야.
+	public PrincipalDetails(User user, Map<String, Object> attributes) {
+		this.user = user;
+		this.attributes = attributes;
 	}
 
 	//권한 : 한개가 아닐 수 있음
@@ -65,6 +79,17 @@ public class PrincipalDetails implements UserDetails {
 		return true;
 	}
 	
-	// ----------------- false 이면 로그인이 안됨
+	//////////// OAuth2User////////////////
+
+	@Override
+	public Map<String, Object> getAttributes() {
+		return attributes;
+	}
+
+	@Override
+	public String getName() {
+		return null;
+	}
+	
 
 }
