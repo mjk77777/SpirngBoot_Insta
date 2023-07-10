@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 
+import com.cos.photogramstart.domain.collections.Collections;
 import com.cos.photogramstart.domain.image.Image;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -61,6 +62,10 @@ public class User {
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER) 
 	@JsonIgnoreProperties("user") // json으로 파싱할 때, Image 클래스의 user 는 무시하고 파싱해줘 (user의 getter 호출되면 무한참조 일어나)
 	private List<Image> images;  //양방향 매핑
+	
+	@JsonIgnoreProperties("imageId")
+	@OneToMany(mappedBy = "user")
+	private List<Collections> collections;
 	
 	private LocalDateTime createDate; //자동으로 들어감
 	

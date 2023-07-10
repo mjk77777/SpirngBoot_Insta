@@ -7,11 +7,15 @@ package com.cos.photogramstart.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import com.cos.photogramstart.config.Oauth.OAuth2DetailsService;
+import com.cos.photogramstart.config.auth.PrincipalDetails;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,10 +26,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final OAuth2DetailsService oAuth2DetailsService;  // DI
 	
+	/* 로그인 실패 핸들러 의존성 주입 */
+	private final AuthenticationFailureHandler customFailureHandler;
+
 	@Bean
 	public BCryptPasswordEncoder encode() {
 		return new BCryptPasswordEncoder();
 	}
+	
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -38,8 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.permitAll()  // 그외의 요청은 모두 허용하겠다.
 			.and()
 			.formLogin()  // 인증이 필요한 요청이 오면 
-			.loginPage("/auth/signin") // 로그인페이지로  //GET
+			.loginPage("/auth/signin") //GET-> 로그인페이지로 
 			.loginProcessingUrl("/auth/signin") // POST -> 스프링 시큐리티가 로그인 프로세스 진행
+			.failureHandler(customFailureHandler)  // 로그인 실패 핸들러 
 			.defaultSuccessUrl("/") //로그인 성공하면 /로 
 			.and()
 			.oauth2Login()  //formLogin() 도 하는데, oauth2 로그인도 할거야!

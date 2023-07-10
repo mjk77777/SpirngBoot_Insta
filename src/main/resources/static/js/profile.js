@@ -65,7 +65,7 @@ function subscribeInfoModalOpen(pageUserId) {
 function getSubscribeModalItem(user) {
 	// 모달에 그림 그리는 함수
 
-	let item = `<div class="subscribe__item" id="subscribeModalItem-${user.id}">
+	let item = `<div class="subscribe__item" id="subscribeModalItem-${user.id}" onclick="location.href='/user/${user.id}' ">
 	<div class="subscribe__img">
 		<img src="/upload/${user.profileImageUrl}" onerror="this.src='/images/person.jpeg'" />
 	</div>

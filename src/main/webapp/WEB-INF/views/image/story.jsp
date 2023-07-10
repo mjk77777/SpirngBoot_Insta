@@ -13,6 +13,23 @@
 		</article>
 	</section>
 </main>
+
+<!-- 컬렉션(북마크) 모달 -->
+<div class="modal-subscribe">
+	<div class="subscribe">
+		<div class="subscribe-header">
+			<span>북마크(컬렉션)에 추가하기</span>
+			<button onclick="modalClose()">
+				<i class="fas fa-times"></i>
+			</button>
+		</div>
+		<div class="subscribe-list" id="collectionModal">
+		
+		</div>
+	</div>
+</div>
+
+
 <script src="/js/story.js"></script>
 </body>
 </html>

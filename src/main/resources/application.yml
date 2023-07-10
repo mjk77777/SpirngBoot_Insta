@@ -21,7 +21,7 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: update   #create - 서버 재실행하면 원래 있던 데이터 다 날아가 , update, none
+      ddl-auto: update  #create - 서버 재실행하면 원래 있던 데이터 다 날아가 , update, none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
@@ -43,3 +43,4 @@ spring:
 
 file:
   path: C:/workspace/springbootwork/upload/
+  collection: C:/workspace/springbootwork/upload/collection/

@@ -19,6 +19,7 @@
   border: 1px solid #dbdbdb;
 }
 
+
 /*업로드박스 로고*/
 .upload .upload-top {
   text-align: center;
@@ -88,11 +89,16 @@
   align-items: center;
 }
 
+.removeButton{
+	width : 15px;
+}
+
 /*이미지에 대한 설명인풋 + 버튼*/
 .upload .upload-form .upload-form-detail input,
-.upload .upload-form .upload-form-detail button {
+.upload .upload-form .upload-form-detail button :not(.removeButton) {
   width: 340px;
 }
+
 .upload .upload-form .upload-form-detail input {
   text-indent: 10px;
   height: 45px;
@@ -115,4 +121,6 @@
   border-top: 1px solid #dbdbdb;
   color: #0095f6;
 }
+
+
 

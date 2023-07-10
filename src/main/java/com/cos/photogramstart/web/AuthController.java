@@ -9,11 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cos.photogramstart.domain.user.User;
@@ -37,7 +39,11 @@ public class AuthController {
 //	}
 	
 	@GetMapping("/auth/signin")
-	public String singinForm() {
+	public String singinForm(@RequestParam(value = "error", required = false) String error,
+												@RequestParam(value = "exception", required = false) String errorMsg,
+												Model model) {
+		model.addAttribute("error", error);
+		model.addAttribute("errorMsg", errorMsg);
 		return "auth/signin";
 	}
 	

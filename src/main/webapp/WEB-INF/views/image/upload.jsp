@@ -27,6 +27,15 @@
                     <!--사진설명 + 업로드버튼-->
                     <div class="upload-form-detail">
                    		 <input type="text" placeholder="사진설명" name="caption">  <!-- key=value 형태로(x-www-urlencoded)  -->
+                   		 <!-- 해시태그 -->
+                   	<div>
+                   		 <div>
+		                   		 <label for="hashtags" class="form-label">해시태그 : </label>
+                   		 		<input type="text" id="hashtags" class="form-control" placeholder="Enter를 눌러 해시태그를 추가하세요!">
+                   		 		<div id = "hashtag-container"></div>
+                   		 		<input type="hidden" id="hashtag-hidden"  name="hashtags">
+                   		 </div>
+                   </div>	 
                         <button class="cta blue">업로드</button>
                     </div>
                     <!--사진설명end-->

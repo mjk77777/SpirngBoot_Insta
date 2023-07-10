@@ -4,6 +4,8 @@ package com.cos.photogramstart.service;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +35,12 @@ public class UserService {
 	@Value("${file.path}")
 	private String uploadFolder;
 	
+	@Transactional(readOnly = true)
+	public List<User> 회원검색(String keyword){
+		return userRepository.mFindUser(keyword);
+	}
+	
+	
 	@Transactional
 	public User 회원프로필사진변경(int principalId, MultipartFile profileImageFile) {
 		UUID uuid = UUID.randomUUID();
@@ -58,6 +66,7 @@ public class UserService {
 	@Transactional(readOnly = true)  // '읽기전용' - 더티체킹하려 감지 안함!
 	public UserProfileDto 회원프로필(int pageUserId, int principalId) {
 		UserProfileDto dto = new UserProfileDto();
+	
 		
 		// User를 select 할 때 , fetch 타입을 LAZY 로 했으면 
 		User userEntity = userRepository.findById(pageUserId).orElseThrow(()->{

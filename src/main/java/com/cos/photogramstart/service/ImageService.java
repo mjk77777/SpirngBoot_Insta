@@ -13,10 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
+import com.cos.photogramstart.domain.collections.CollectionRepository;
+import com.cos.photogramstart.domain.collections.Collections;
+import com.cos.photogramstart.domain.hashtag.ImageHashtag;
 import com.cos.photogramstart.domain.image.Image;
 import com.cos.photogramstart.domain.image.ImageRepository;
 import com.cos.photogramstart.web.dto.image.ImageUploadDto;
-import com.sun.mail.handlers.image_gif;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +27,8 @@ import lombok.RequiredArgsConstructor;
 public class ImageService {
 
 	private final ImageRepository imageRepository;
+	private final CollectionRepository collectionRepository;
+	private final ImageHashtagService imageHashtagService;
 	
 	@Value("${file.path}")  // application.yml 에 적은 설정값 가져올 수 있음
 	private String uploadFolder;
@@ -39,6 +43,7 @@ public class ImageService {
 	public Page<Image> 이미지스토리(int principalId, Pageable pageable){
 		Page<Image> images = imageRepository.mStory(principalId, pageable); 
 		
+		System.out.println("images : "+images);
 		// images 에 '좋아요' 상태 담기
 		images.forEach((image) -> { // login 한 사용자가 구독하고 있는 images 들 가져와
 			
@@ -50,6 +55,11 @@ public class ImageService {
 					image.setLikeState(true);
 				}
 			});
+			
+			image.setBookmarkState(collectionRepository.mSearchBookmark(principalId, image.getId()));
+			
+			List<ImageHashtag> hashtags = imageHashtagService.findHashtagListByImage(image);
+			image.setImageHashtags(hashtags);
 		});
 		
 		return images;
@@ -57,6 +67,7 @@ public class ImageService {
 	
 	@Transactional
 	public void 사진업로드(ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
+		
 		UUID uuid = UUID.randomUUID();  //UUID - 유일성 보장하는 식별자
 		String imageFileName = uuid + "_"+ imageUploadDto.getFile().getOriginalFilename(); // 1.jpg
 		System.out.println("이미지 파일 이름 " + imageFileName);
@@ -75,8 +86,14 @@ public class ImageService {
 		Image image = imageUploadDto.toEntity(imageFileName, principalDetails.getUser());
 		Image imageEntity = imageRepository.save(image);
 		
-		//System.out.println(imageEntity.toString());  
+		
+		System.out.println(imageUploadDto.getHashtags());
+		// 해쉬태그 저장하기
+		imageHashtagService.해시태그저장(imageUploadDto.getHashtags(), imageEntity);
+		
 	}
+	
+
 
 
 }

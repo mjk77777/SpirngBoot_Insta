@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.image.Image;
+import com.cos.photogramstart.service.ImageHashtagService;
 import com.cos.photogramstart.service.ImageService;
 import com.cos.photogramstart.service.LikesService;
 import com.cos.photogramstart.web.dto.CMRespDto;
@@ -27,14 +28,21 @@ public class ImageApiController {
 	
 	private final ImageService imageService;
 	private final LikesService likesService;
+	private final ImageHashtagService imageHashtagService;
 
 	// 스토리 불러오기
 	@GetMapping("/api/image")
 	public ResponseEntity<?> imageStory(@AuthenticationPrincipal PrincipalDetails principalDetails,
-			@PageableDefault(size = 3) Pageable pageable){  //org.springframework.data.domain.Pageable
-		Page<Image> images = imageService.이미지스토리(principalDetails.getUser().getId(), pageable);
+			@PageableDefault(size = 3) Pageable pageable   //org.springframework.data.domain.Pageable
+			){ 
+		
+		Page<Image> images = null;
+		
+			images = imageService.이미지스토리(principalDetails.getUser().getId(), pageable);
+		
 		return new ResponseEntity<>(new CMRespDto<>(1, "스토리 가져오기 성공", images), HttpStatus.OK);
 	}
+
 	
 	// 좋아요 하기
 	@PostMapping("/api/image/{imageId}/likes")
@@ -50,7 +58,7 @@ public class ImageApiController {
 		return new ResponseEntity<>(new CMRespDto<>(1, "좋아요 취소 성공", null), HttpStatus.OK);
 	}
 	
-	
+
 	
 	
 	

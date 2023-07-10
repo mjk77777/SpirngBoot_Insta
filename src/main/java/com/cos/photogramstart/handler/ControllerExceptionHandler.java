@@ -31,7 +31,7 @@ public class ControllerExceptionHandler {
 		}
 	}
 	
-	@ExceptionHandler(CustomException.class)  // 모든 CustomValidationException 을 이 함수가 가로 챔 
+	@ExceptionHandler(CustomException.class)  
 	public String exception(CustomException e) {   
 		return Script.back(e.getMessage());
 	}

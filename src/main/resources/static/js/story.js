@@ -5,6 +5,7 @@
 	(3) 좋아요, 안좋아요
 	(4) 댓글쓰기
 	(5) 댓글삭제
+	(6) 컬렉션모달
  */
 //(0) 현재 로그인한 사용자 아이디
 let principalId = $('#principalId').val();
@@ -14,26 +15,9 @@ let principalId = $('#principalId').val();
 
 let page = 0;
 
-function storyLoad() {
-	$.ajax({
-		url: `/api/image?page=${page}`,
-		dataType: "json"
-	}).done(res => {
-		console.log(res);
-		res.data.content.forEach((image) => {
-			let item = getStoryItem(image);
-			$("#storyList").append(item);
-		});
-	}).fail(error => {
-		console.log(error);
-	});
-}
-storyLoad(); // 호출
-
 function getStoryItem(image) {
 
-	let item = `<div class="story-list__item">
-	${image.id}
+	let item = `<div class="story-list__item id="list-item">
 	<div class="sl__item__header">
 		<div>
 			<img class="profile-image" src="/upload/${image.user.profileImageUrl}"
@@ -58,33 +42,52 @@ function getStoryItem(image) {
 	}
 
 
-	item += `</button>
-		</div>
+	item += `</button><button>`;
+	if (image.bookmarkState == 1) {
+		item += `<i class="fas fa-bookmark red" onclick="toggleCollection(this,${image.id})"></i>`;
+	} else {
+		item += `<i class="far fa-bookmark" onclick="toggleCollection(this, ${image.id})" ></i>`;
+	}
+
+	item += `</button></div>
 
 		<span class="like"><b id="storyLikeCount-${image.id}">${image.likeCount} </b>likes</span>
 
 		<div class="sl__item__contents__content">
-			<p>${image.caption}</p>
-		</div>
+			<p>${image.caption}</p>`;
+			
+			
+			if(image.imageHashtags){
+				for(let  data of  image.imageHashtags){
+					item += `<span onclick="javascript:hashtagStoryLoad('${data.hashtag.tagName}')">#${data.hashtag.tagName}, </span>`;
+					if(image.imageHashtags[image.imageHashtags.length -1] == data){   // 마지막 해시태그는 쉼표(,) 뺀다.
+						item += `<span onclick="javascript:hashtagStoryLoad('${data.hashtag.tagName}') ">#${data.hashtag.tagName} </span>`;
+					}
+				}
+			};
+			
+			
+		item += `</div>
+		</form>
 
-		<div id="storyCommentList-${image.id}">`; 
-		
-		image.comments.forEach((comment)=>{
-			item += `<div class="sl__item__contents__comment" id="storyCommentItem-${comment.id}">
+		<div id="storyCommentList-${image.id}">`;
+
+	image.comments.forEach((comment) => {
+		item += `<div class="sl__item__contents__comment" id="storyCommentItem-${comment.id}">
 				<p>
 					<b>${comment.user.username} :</b> ${comment.content}
 				</p>`;
-				
-			if( principalId == comment.user.id){
-				item += `
+
+		if (principalId == comment.user.id) {
+			item += `
 				<button onclick="deleteComment(${comment.id})">
 					<i class="fas fa-times"></i>
 				</button>`;
-			}
-		item +=	`</div>`;
-		});
-			
-		item += `	
+		}
+		item += `</div>`;
+	});
+
+	item += `	
 		</div>
 
 		<div class="sl__item__input">
@@ -97,6 +100,52 @@ function getStoryItem(image) {
 
 	return item;
 }
+
+function storyLoad() {
+	$.ajax({
+		url: `/api/image?page=${page}`,
+		dataType: "json"
+	}).done(res => {
+		console.log(res);
+		if (res.data.empty == true) {
+			$('#storyList').append("<h1>구독정보가 없습니다. 친구들을 팔로잉하세요~</h1>");
+		}
+		res.data.content.forEach((image) => {
+			let item = getStoryItem(image);
+			$("#storyList").append(item);
+		});
+
+	}).fail(error => {
+		console.log(error);
+	});
+}
+storyLoad(); // 호출
+
+//해시태그 스토리 로드
+function hashtagStoryLoad(hashtag){
+	console.log("=====88888888888 "+ hashtag);
+	$.ajax({
+		url: `/api/image/${hashtag}?page=${page}`,
+		dataType: "json"
+	}).done(res => {
+		console.log(res);
+		$('#storyList').val("");
+		if (res.data.empty == true) {
+			$('#storyList').append("<h1>해당 해시태그에 해당하는 게시물이 없습니다!</h1>");
+		}
+		res.data.content.forEach((image) => {
+			$("#storyList").val("");
+			let item = getStoryItem(image);
+			$("#storyList").append(item);
+		});
+
+	}).fail(error => {
+		console.log(error);
+	});
+	
+}
+
+
 
 // (2) 스토리 스크롤 페이징하기
 $(window).scroll(() => {  // window 의 scroll 이벤트
@@ -186,7 +235,7 @@ function addComment(imageId) {
 	}).done(res => {
 		console.log("성공", res);
 
-		let comment = res.data ;
+		let comment = res.data;
 		let content = `
 			  <div class="sl__item__contents__comment" id="storyCommentItem-${comment.id}"> 
 			    <p>
@@ -211,18 +260,62 @@ function addComment(imageId) {
 // (5) 댓글 삭제
 function deleteComment(commentId) {
 	$.ajax({
-		type : "delete",
-		url : `/api/comment/${commentId}`,
-		dataType : "json"
-	}).done(res=>{
+		type: "delete",
+		url: `/api/comment/${commentId}`,
+		dataType: "json"
+	}).done(res => {
 		console.log("댓글삭제성공", res);
 		// 삭제 성공하면 바로 view 단에서 안 보이게 날려
 		$(`#storyCommentItem-${commentId}`).remove();
-	}).fail(error=>{
+	}).fail(error => {
 		console.log("댓글삭제실패", error);
 	});
 
 }
+
+// 북마크 추가 & 취소
+function toggleCollection(obj, imageId) {
+
+	if ($(obj).hasClass("fas")) {  // 북마크된 상태 -> 취소하기
+	
+		$.ajax({
+			type : "delete",
+			url : `/collection/${imageId}/delete`,
+			dataType : "json"
+		}).done(res=>{
+			console.log("북마크 취소 성공", res);
+			$(obj).removeClass("fas");
+			$(obj).removeClass("red");
+			$(obj).addClass("far");
+		}).fail(error=>{
+			console.log("북마크 취소 실패", error);
+		});
+
+	} else if ($(obj).hasClass("far")) {  // 북마크 안된 상태 -> 북마크
+
+		$.ajax({
+			type: "post",
+			url: `/collection/${imageId}/post`,
+			dataType: "json"
+		}).done(res => {
+			console.log("북마크 추가 성공", res);
+			$(obj).removeClass("far");
+			$(obj).addClass("fas");
+			$(obj).addClass("red");
+		}).fail(error => {
+			console.log("북마크 추가실패", error);
+		});
+	}
+
+
+}
+
+
+
+
+
+
+
 
 
 
