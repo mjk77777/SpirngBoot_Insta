@@ -33,7 +33,7 @@
 ![image](https://github.com/mjk77777/SpirngBoot_Insta/assets/111689386/fefd26da-cad6-4d26-ae85-3327798739d2)
 
     - 구독정보 탭
-    ![image](https://github.com/mjk77777/SpirngBoot_Insta/assets/111689386/b21eb80c-5983-4339-b91e-0ade92c7c56b)
+   ![image](https://github.com/mjk77777/SpirngBoot_Insta/assets/111689386/b21eb80c-5983-4339-b91e-0ade92c7c56b)
 
     - 사진 업로드 (태그 등록 가능)
    ![gg](https://github.com/mjk77777/SpirngBoot_Insta/assets/111689386/c6d875d1-0809-4d43-aa03-a29a7594fc7d) 
