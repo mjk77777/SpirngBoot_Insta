@@ -26,11 +26,12 @@
 
 ## OAuth2 라이브러리를 이용한 구글 로그인
     - SecurityConfig 클래스
-  ![image](https://github.com/mjk77777/SpirngBoot_Insta/assets/111689386/4f3d8347-81d5-42e4-8bfc-649151cba90f" width="700" height="370")
+  ![image](https://github.com/mjk77777/SpirngBoot_Insta/assets/111689386/4f3d8347-81d5-42e4-8bfc-649151cba90f")
 
 
 ## 회원 프로필 페이지
 ![image](https://github.com/mjk77777/SpirngBoot_Insta/assets/111689386/fefd26da-cad6-4d26-ae85-3327798739d2)
+
     - 구독정보 탭
     ![image](https://github.com/mjk77777/SpirngBoot_Insta/assets/111689386/b21eb80c-5983-4339-b91e-0ade92c7c56b)
 
